@@ -3,11 +3,11 @@ class Watson < Formula
 
   desc "Command-line tool to track (your) time"
   homepage "https://tailordev.github.io/Watson/"
-  url "https://files.pythonhosted.org/packages/d3/1c/b2e928b12a320ee098da477b50ee9dd1d5054b9501f63fae670767bee279/td-watson-1.10.0.tar.gz"
-  sha256 "f223bc0cd03a4baeb0b149032731edda9c6fc0c04ff61d819c6f542f01957369"
+  url "https://github.com/Link-/Watson/archive/1.10.0.tar.gz"
+  sha256 "aa5f40fd6f1383c0ce0065a90c2d3f92a1f57a00e4000cb1b6ebe60f90dac17f"
   license "MIT"
   revision 1
-  head "https://github.com/TailorDev/Watson.git"
+  head "https://github.com/Link-/Watson.git"
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_big_sur: "bbacc9c9851817a475dffab977b811aae3e458ec44764cc913c6e5e7a695a0cf"
