@@ -6,6 +6,7 @@
     $ make docs-->
 
 # Commands
+
 ## `add`
 
 ```bash
@@ -15,7 +16,6 @@ Usage:  watson add [OPTIONS] [ARGS]...
 Add time to a project with tag(s) that was not tracked live.
 
 Example:
-
 
     $ watson add --from "2018-03-20 12:00:00" --to "2018-03-20 13:00:00" \
      programming +addfeature
@@ -56,9 +56,7 @@ You can change the output format from *plain text* to *JSON* using the
 `--json` option or to *CSV* using the `--csv` option. Only one of these
 two options can be used at once.
 
-
 Example:
-
 
     $ watson aggregate
     Wed 14 November 2018 - 5h 42m 22s
@@ -148,7 +146,6 @@ You can edit the config file with an editor with the `--edit` option.
 
 Example:
 
-
     $ watson config backend.token 7e329263e329
     $ watson config backend.token
     7e329263e329
@@ -166,7 +163,7 @@ Flag | Help
 Usage:  watson edit [OPTIONS] [ID]
 ```
 
-Edit a frame.
+Edit one or more frames.
 
 You can specify the frame to edit by its position or by its frame id.
 For example, to edit the second-to-last frame, pass `-2` as the frame
@@ -174,6 +171,13 @@ index. You can get the id of a frame with the `watson log` command.
 
 If no id or index is given, the frame defaults to the current frame (or the
 last recorded frame, if no project is currently running).
+
+If day, week or month is flagged, all the frames for that day, week or
+month will be available for editing. If an id is also passed it
+will be ignored.
+
+If from and/or to are specified the frames within this range will be
+available for editing.
 
 The editor used is determined by the `VISUAL` or `EDITOR` environment
 variables (in that order) and defaults to `notepad` on Windows systems and
@@ -185,6 +189,11 @@ Flag | Help
 -----|-----
 `-c, --confirm-new-project` | Confirm addition of new project.
 `-b, --confirm-new-tag` | Confirm creation of new tag.
+`-d, --day` | Edit all frames for today.
+`-w, --week` | Edit all frames for the past week.
+`-m, --month` | Edit all frames for the past month.
+`-f, --from` | The date from when the frames to edit should start. Defaults to seven days ago.
+`-t, --to` | The date at which the frames to edit should stop (inclusive). Defaults to tomorrow.
 `--help` | Show this message and exit.
 
 ## `frames`
@@ -196,7 +205,6 @@ Usage:  watson frames [OPTIONS]
 Display the list of all frame IDs.
 
 Example:
-
 
     $ watson frames
     f1c4815
@@ -256,7 +264,6 @@ You can change the output format from *plain text* to *JSON* using the
 two options can be used at once.
 
 Example:
-
 
     $ watson log --project voyager2 --project apollo11
     Thursday 08 May 2015 (56m 33s)
@@ -337,17 +344,15 @@ Merge will output statistics about the merge operation.
 
 Example:
 
-
     $ watson merge frames-with-conflicts
     120 frames will be left unchanged
     12  frames will be merged
     3   frame conflicts need to be resolved
-    
+
 To perform a merge operation, the user will be prompted to
 select the frame they would like to keep.
 
 Example:
-
 
     $ watson merge frames-with-conflicts --force
     120 frames will be left unchanged
@@ -393,7 +398,6 @@ Display the list of all the existing projects.
 
 Example:
 
-
     $ watson projects
     apollo11
     hubble
@@ -431,7 +435,6 @@ Usage:  watson rename [OPTIONS] TYPE OLD_NAME NEW_NAME
 Rename a project or tag.
 
 Example:
-
 
     $ watson rename project read-python-intro learn-python
     Renamed project "read-python-intro" to "learn-python"
@@ -479,7 +482,6 @@ using the `--json` option or to *CSV* using the `--csv` option. Only one
 of these two options can be used at once.
 
 Example:
-
 
     $ watson report
     Mon 05 May 2014 -> Mon 12 May 2014
@@ -601,7 +603,6 @@ an error is printed and no further action taken.
 
 Example:
 
-
     $ watson start apollo11 +module +brakes
     Starting project apollo11 [module, brakes] at 16:34
     $ watson stop
@@ -637,15 +638,13 @@ in the future.
 
 Example:
 
-
     $ watson start --at 13:37
     Starting project apollo11 at 13:37
-    
+
 If the `--no-gap` flag is given, the start time of the new project is set
 to the stop time of the most recently stopped project.
 
 Example:
-
 
     $ watson start apollo11 +module +brakes --no-gap
     Starting project apollo11 [module, brakes] at 16:34
@@ -675,7 +674,6 @@ placeholders are the same as for the `strftime` method of Python's
 `datetime.datetime` class.
 
 Example:
-
 
     $ watson status
     Project apollo11 [brakes] started seconds ago (2014-05-19 14:32:41+0100)
@@ -707,7 +705,6 @@ not be in the future.
 
 Example:
 
-
     $ watson stop --at 13:37
     Stopping project apollo11, started an hour ago and stopped 30 minutes ago. (id: e9ccd52) # noqa: E501
 
@@ -731,7 +728,6 @@ The URL of the server and the User Token must be defined via the
 
 Example:
 
-
     $ watson config backend.url http://localhost:4242
     $ watson config backend.token 7e329263e329
     $ watson sync
@@ -754,7 +750,6 @@ Display the list of all the tags.
 
 Example:
 
-
     $ watson tags
     antenna
     brakes
@@ -774,4 +769,3 @@ Example:
 Flag | Help
 -----|-----
 `--help` | Show this message and exit.
-

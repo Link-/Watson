@@ -172,6 +172,57 @@ def get_frame_from_argument(watson, arg):
         )
 
 
+def get_frames_for_today(watson):
+    """
+    Get frames for today.
+    """
+    today = arrow.now()
+    span = watson.frames.span(today, today)
+    entries = [
+        frame
+        for frame in watson.frames.filter(span=span)
+    ]
+    return entries
+
+
+def get_frames_for_week(watson):
+    """
+    Get frames for current week.
+    """
+    week_ago = arrow.now().shift(weeks=-1)
+    span = watson.frames.span(week_ago, arrow.now())
+    entries = [
+        frame
+        for frame in watson.frames.filter(span=span)
+    ]
+    return entries
+
+
+def get_frames_for_month(watson):
+    """
+    Get frames for current month.
+    """
+    month_ago = arrow.now().shift(months=-1)
+    span = watson.frames.span(month_ago, arrow.now())
+    entries = [
+        frame
+        for frame in watson.frames.filter(span=span)
+    ]
+    return entries
+
+
+def get_frames_between(watson, from_, to):
+    """
+    Get frames between range.
+    """
+    span = watson.frames.span(from_, to)
+    entries = [
+        frame
+        for frame in watson.frames.filter(span=span)
+    ]
+    return entries
+
+
 def get_start_time_for_period(period):
     # Using now() from datetime instead of arrow for mocking compatibility.
     now = arrow.Arrow.fromdatetime(datetime.datetime.now())
