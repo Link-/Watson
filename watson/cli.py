@@ -1339,6 +1339,8 @@ def edit(watson, confirm_new_project, confirm_new_tag, day, week,
             'start': frame.start.format(datetime_format),
             'stop': frame.stop.format(datetime_format)
             if frame.stop or id else None,
+            'delta': format_timedelta(frame.stop - frame.start)
+            if frame.stop else '-',
             'project': frame.project,
             'tags': frame.tags,
         }
