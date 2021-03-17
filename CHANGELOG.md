@@ -12,10 +12,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The `log` command output can now be filtered to exclude projects and tags via `--ignore-project` and `--ignore-tag` (#395)
 - Python 3.8 support (#402)
 - Python 3.9 support (#402)
+- Support for the TZ environment variable to specify the local time zone (#391)
+
+### Changed
+
+- Upgrade to major arrow release 1.0.0 (#407)
+
+### Fixed
+
+- Zsh completion (#379)
 
 ### Removed
 
 - Python 2.7 support (#305).
+- Python 3.5 support (#407).
 
 ## [1.10.0] - 2020-07-03
 
