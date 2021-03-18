@@ -1260,23 +1260,23 @@ def add(watson, args, from_, to, confirm_new_project, confirm_new_tag):
               help="Confirm creation of new tag.")
 @click.option('-y', '--year', cls=MutuallyExclusiveOption, type=DateTime,
               flag_value=_SHORTCUT_OPTIONS_VALUES['year'],
-              mutually_exclusive=['id', 'day', 'week', 'luna', 'month', 'all'],
+              mutually_exclusive=['day', 'week', 'luna', 'month', 'all'],
               help='Edit all frames of the current year.')
 @click.option('-m', '--month', cls=MutuallyExclusiveOption, type=DateTime,
               flag_value=_SHORTCUT_OPTIONS_VALUES['month'],
-              mutually_exclusive=['id', 'day', 'week', 'luna', 'year', 'all'],
+              mutually_exclusive=['day', 'week', 'luna', 'year', 'all'],
               help='Edit all frames of the current month.')
 @click.option('-w', '--week', cls=MutuallyExclusiveOption, type=DateTime,
               flag_value=_SHORTCUT_OPTIONS_VALUES['week'],
-              mutually_exclusive=['id', 'day', 'month', 'luna', 'year', 'all'],
+              mutually_exclusive=['day', 'month', 'luna', 'year', 'all'],
               help='Edit all frames of the current week.')
 @click.option('-d', '--day', cls=MutuallyExclusiveOption, type=DateTime,
               flag_value=_SHORTCUT_OPTIONS_VALUES['day'],
-              mutually_exclusive=['id', 'week', 'month', 'luna', 'year', 'all'],
+              mutually_exclusive=['week', 'month', 'luna', 'year', 'all'],
               help='Edit all frames of today.')
 @click.option('-a', '--all', cls=MutuallyExclusiveOption, type=DateTime,
               flag_value=_SHORTCUT_OPTIONS_VALUES['all'],
-              mutually_exclusive=['id', 'day', 'week', 'month', 'luna', 'year'],
+              mutually_exclusive=['day', 'week', 'month', 'luna', 'year'],
               help='Edit all frames.')
 @click.argument('id', required=False, autocompletion=get_frames)
 @click.pass_obj
