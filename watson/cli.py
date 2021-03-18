@@ -35,6 +35,7 @@ from .utils import (
     get_frames_for_today,
     get_frames_for_week,
     get_frames_for_month,
+    get_frames_for_year,
     get_frames_between,
     options, safe_save,
     sorted_groupby,
@@ -1257,24 +1258,31 @@ def add(watson, args, from_, to, confirm_new_project, confirm_new_tag):
               help="Confirm addition of new project.")
 @click.option('-b', '--confirm-new-tag', is_flag=True, default=False,
               help="Confirm creation of new tag.")
-@click.option('-d', '--day', is_flag=True, default=False,
-              help="Edit all frames for today.")
-@click.option('-w', '--week', is_flag=True, default=False,
-              help="Edit all frames for the past week.")
-@click.option('-m', '--month', is_flag=True, default=False,
-              help="Edit all frames for the past month.")
-@click.option('-f', '--from', 'from_', type=DateTime,
-              default=arrow.now().shift(days=-7),
-              help="The date from when the frames to edit should start. "
-              "Defaults to seven days ago.")
-@click.option('-t', '--to', type=DateTime, default=arrow.now(),
-              help="The date at which the frames to edit should stop "
-              "(inclusive). Defaults to tomorrow.")
+@click.option('-y', '--year', cls=MutuallyExclusiveOption, type=DateTime,
+              flag_value=_SHORTCUT_OPTIONS_VALUES['year'],
+              mutually_exclusive=['id', 'day', 'week', 'luna', 'month', 'all'],
+              help='Edit all frames of the current year.')
+@click.option('-m', '--month', cls=MutuallyExclusiveOption, type=DateTime,
+              flag_value=_SHORTCUT_OPTIONS_VALUES['month'],
+              mutually_exclusive=['id', 'day', 'week', 'luna', 'year', 'all'],
+              help='Edit all frames of the current month.')
+@click.option('-w', '--week', cls=MutuallyExclusiveOption, type=DateTime,
+              flag_value=_SHORTCUT_OPTIONS_VALUES['week'],
+              mutually_exclusive=['id', 'day', 'month', 'luna', 'year', 'all'],
+              help='Edit all frames of the current week.')
+@click.option('-d', '--day', cls=MutuallyExclusiveOption, type=DateTime,
+              flag_value=_SHORTCUT_OPTIONS_VALUES['day'],
+              mutually_exclusive=['id', 'week', 'month', 'luna', 'year', 'all'],
+              help='Edit all frames of today.')
+@click.option('-a', '--all', cls=MutuallyExclusiveOption, type=DateTime,
+              flag_value=_SHORTCUT_OPTIONS_VALUES['all'],
+              mutually_exclusive=['id', 'day', 'week', 'month', 'luna', 'year'],
+              help='Edit all frames.')
 @click.argument('id', required=False, autocompletion=get_frames)
 @click.pass_obj
 @catch_watson_error
-def edit(watson, confirm_new_project, confirm_new_tag, day, week,
-         month, from_, to, id):
+def edit(watson, confirm_new_project, confirm_new_tag, 
+           year, month, week, day, all, id):
     """
     Edit one or more frames.
 
@@ -1308,13 +1316,14 @@ def edit(watson, confirm_new_project, confirm_new_tag, day, week,
         # Editing all the frames of the week
         frames = get_frames_for_week(watson)
     elif month:
-        # Editing all the frame of the month
+        # Editing all the frames of the month
         frames = get_frames_for_month(watson)
-    elif from_ or to:
-        if from_ > to:
-            raise click.ClickException("'from' must be anterior to 'to'")
-        # Editing frames within a date/time range
-        frames = get_frames_between(watson, from_, to)
+    elif year:
+        # Edit all the frames of the year
+        frames = get_frames_for_year(watson)
+    elif all:
+        # Edit all the frames since the beginning of time
+        frames = get_frames_for_year(watson)
     elif id:
         # Editing a single frame by id
         frames = [get_frame_from_argument(watson, id)]
@@ -1331,7 +1340,7 @@ def edit(watson, confirm_new_project, confirm_new_tag, day, week,
     else:
         raise click.ClickException(
             style('error', "No frames recorded yet. It's time to create your "
-                           "first one!"))
+                            "first one!"))
     data = [
         {
             'id': frame.id
@@ -1390,7 +1399,7 @@ def edit(watson, confirm_new_project, confirm_new_tag, day, week,
                 if start > arrow.utcnow():
                     raise ValueError("Start time cannot be in the future")
                 if stop and stop > arrow.utcnow():
-                    raise ValueError("Stop time cannot be in the future")
+                    click.echo("Warning: Stop time is in the future")
                 # Compare the id to the original frame's id at the same index
                 #  raise ValueError if they're not the same
                 if frame['id'] != data[index]['id']:

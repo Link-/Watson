@@ -195,6 +195,18 @@ def get_frames_for_month(watson):
     return entries
 
 
+def get_frames_for_year(watson):
+    """
+    Get frames for current year.
+    """
+    year_ago = arrow.now().shift(years=-1)
+    span = watson.frames.span(year_ago, arrow.now())
+    entries = [
+        frame
+        for frame in watson.frames.filter(span=span)
+    ]
+    return entries
+
 def get_frames_between(watson, from_, to):
     """
     Get frames between range.
