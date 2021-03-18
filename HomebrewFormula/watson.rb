@@ -4,7 +4,7 @@ class Watson < Formula
   desc "Command-line tool to track (your) time"
   homepage "https://tailordev.github.io/Watson/"
   url "https://github.com/Link-/Watson/archive/1.10.1.tar.gz"
-  sha256 "208873aa322739ba02663b0bfd466e8c2b49ec9ee507ab4dbd45c21c3e8ea4b2"
+  sha256 "09bd6301168cae0fc44b8e5537ef15b7f0206c352b70df9d003953b494e15780"
   license "MIT"
   revision 1
   head "https://github.com/Link-/Watson.git"
