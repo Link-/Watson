@@ -1309,7 +1309,11 @@ def edit(watson, confirm_new_project, confirm_new_tag,
     datetime_format = '{} {}'.format(date_format, time_format)
     local_tz = local_tz_info()
 
-    if day:
+    if id:
+        # Editing a single frame by id
+        frames = [get_frame_from_argument(watson, id)]
+        id = frames[0].id
+    elif day:
         # Editing all the frames of today
         frames = get_frames_for_today(watson)
     elif week:
@@ -1324,13 +1328,9 @@ def edit(watson, confirm_new_project, confirm_new_tag,
     elif all:
         # Edit all the frames since the beginning of time
         frames = get_frames_for_year(watson)
-    elif id:
-        # Editing a single frame by id
-        frames = [get_frame_from_argument(watson, id)]
-        id = frames[0].id
     elif watson.is_started:
         # Frame is started and doesn't have a stop time yet
-        frames = [Frame(watson.current['start'], None,
+        frames = [Frame(watson.current['start'], arrow.utcnow(),
                         watson.current['project'], None,
                         watson.current['tags'])]
     elif watson.frames:
@@ -1346,10 +1346,10 @@ def edit(watson, confirm_new_project, confirm_new_tag,
             'id': frame.id
             if frame.id else None,
             'start': frame.start.format(datetime_format),
-            'stop': frame.stop.format(datetime_format)
-            if frame.stop or id else None,
-            'delta': format_timedelta(frame.stop - frame.start)
-            if frame.stop else '-',
+            **({ 'stop': frame.stop.format(datetime_format) }
+            if frame.stop or id else {}),
+            **({ 'delta': format_timedelta(frame.stop - frame.start) }
+            if frame.stop else {}),
             'project': frame.project,
             'tags': frame.tags,
         }
@@ -1444,7 +1444,7 @@ def edit(watson, confirm_new_project, confirm_new_tag,
     for frame in edited_frames:
         (id, project, start, stop, tags) = frame
         click.echo(
-            u"Edited frame for project {project}{tags}, from {start} to {stop}"
+            u"Edited frame for project {project}{tags}, from {start} to {stop} "
             u"({delta})".format(
                 delta=format_timedelta(stop - start) if stop else '-',
                 project=style('project', project),
