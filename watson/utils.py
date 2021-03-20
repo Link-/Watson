@@ -207,6 +207,7 @@ def get_frames_for_year(watson):
     ]
     return entries
 
+
 def get_frames_between(watson, from_, to):
     """
     Get frames between range.

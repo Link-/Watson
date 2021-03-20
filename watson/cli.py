@@ -1281,8 +1281,8 @@ def add(watson, args, from_, to, confirm_new_project, confirm_new_tag):
 @click.argument('id', required=False, autocompletion=get_frames)
 @click.pass_obj
 @catch_watson_error
-def edit(watson, confirm_new_project, confirm_new_tag, 
-           year, month, week, day, all, id):
+def edit(watson, confirm_new_project, confirm_new_tag,
+         year, month, week, day, all, id):
     """
     Edit one or more frames.
 
@@ -1340,16 +1340,16 @@ def edit(watson, confirm_new_project, confirm_new_tag,
     else:
         raise click.ClickException(
             style('error', "No frames recorded yet. It's time to create your "
-                            "first one!"))
+                  "first one!"))
     data = [
         {
             'id': frame.id
             if frame.id else None,
             'start': frame.start.format(datetime_format),
-            **({ 'stop': frame.stop.format(datetime_format) }
-            if frame.stop or id else {}),
-            **({ 'delta': format_timedelta(frame.stop - frame.start) }
-            if frame.stop else {}),
+            **({'stop': frame.stop.format(datetime_format)}
+               if frame.stop or id else {}),
+            **({'delta': format_timedelta(frame.stop - frame.start)}
+               if frame.stop else {}),
             'project': frame.project,
             'tags': frame.tags,
         }
@@ -1777,15 +1777,15 @@ def rename(watson, rename_type, old_name, new_name):
     if rename_type == 'tag':
         watson.rename_tag(old_name, new_name)
         click.echo('Renamed tag "{}" to "{}"'.format(
-                        style('tag', old_name),
-                        style('tag', new_name)
-                   ))
+            style('tag', old_name),
+            style('tag', new_name)
+        ))
     elif rename_type == 'project':
         watson.rename_project(old_name, new_name)
         click.echo('Renamed project "{}" to "{}"'.format(
-                        style('project', old_name),
-                        style('project', new_name)
-                   ))
+            style('project', old_name),
+            style('project', new_name)
+        ))
     else:
         raise click.ClickException(style(
             'error',
