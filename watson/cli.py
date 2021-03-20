@@ -1444,8 +1444,8 @@ def edit(watson, confirm_new_project, confirm_new_tag,
     for frame in edited_frames:
         (id, project, start, stop, tags) = frame
         click.echo(
-            u"Edited frame for project {project}{tags}, from {start} to {stop} "
-            u"({delta})".format(
+            u"Edited frame for project {project}{tags}, from {start} to "
+            u"{stop} ({delta})".format(
                 delta=format_timedelta(stop - start) if stop else '-',
                 project=style('project', project),
                 tags=(" " if tags else "") + style('tags', tags),
